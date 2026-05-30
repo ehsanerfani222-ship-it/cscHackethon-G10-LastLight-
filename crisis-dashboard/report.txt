@@ -1,0 +1,30 @@
+Frontend Files: 
+- types/crisis.ts, news.ts 
+- store/useStore.ts 
+- hooks/usePipeline.ts 
+- services/api.ts 
+- components/Crisis/CrisisModal.tsx 
+- components/Dashboard/* 
+- components/Earth/* 
+- components/Pipeline/PredictionsPanel.tsx 
+- components/Layout/Navbar.tsx, BottomNav.tsx 
+- components/Notifications/AlarmBell.tsx 
+- components/Voice/VoiceNarrator.tsx 
+- components/Briefing/SurvivalBriefingModal.tsx 
+- components/Settings/ApiKeyModal.tsx 
+- components/Map/MapView.tsx 
+- components/News/NewsPanel.tsx 
+- components/SafeZones/SafeZonesPanel.tsx 
+- components/SOS/SosButton.tsx 
+- components/Radar/ThreatRadar.tsx 
+- components/Timeline/TimelineSlider.tsx 
+- pages/Home.tsx 
+- App.tsx, main.tsx, index.css 
+ 
+Backend Files: 
+- routes/crisis.routes.ts, facilities.routes.ts, news.routes.ts, briefing.routes.ts 
+- controllers/crisis.controller.ts 
+- services/*.ts (9 files) 
+- data/seedCrises.ts 
+- prisma/schema.prisma 
+- index.ts 
