@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.db
+*.db-journal
+backend/lastlight.db
+backend/prisma/dev.db
+frontend/dist/

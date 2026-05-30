@@ -1,0 +1,161 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, X, Phone, Share2, CheckCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
+
+const EMERGENCY_NUMBERS = [
+  { label: 'International', number: '112' },
+  { label: 'United States', number: '911' },
+  { label: 'United Kingdom', number: '999' },
+  { label: 'Thailand', number: '1669' },
+];
+
+export function SosButton() {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
+
+  const handleClick = () => {
+    if (sent) return;
+    setShowConfirm(true);
+    navigator.geolocation?.getCurrentPosition(
+      (pos) => setUserPos({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => {}
+    );
+  };
+
+  const handleShare = () => {
+    const lat = userPos?.lat;
+    const lng = userPos?.lng;
+    const location = lat && lng ? `https://maps.google.com/?q=${lat},${lng}` : 'unknown location';
+    const message = `SOS! I need help at: ${location}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const confirmSos = () => {
+    setSent(true);
+    setShowConfirm(false);
+    toast.success('SOS ready to share with emergency contacts', {
+      style: { background: '#FF3B5C', color: 'white' },
+    });
+  };
+
+  return (
+    <>
+      <motion.button
+        className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xs"
+        style={{
+          background: sent ? '#2EF2A3' : 'linear-gradient(135deg, #FF3B5C, #FF0040)',
+          boxShadow: sent ? '0 0 20px rgba(46,242,163,0.6)' : '0 0 20px rgba(255,59,92,0.6)',
+          border: '2px solid rgba(255,255,255,0.2)',
+        }}
+        animate={{ scale: [1, 1.05, 1] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        onClick={handleClick}
+        title="Emergency SOS"
+      >
+        {sent ? <CheckCircle size={22} /> : 'SOS'}
+      </motion.button>
+
+      <AnimatePresence>
+        {sent && (
+          <motion.div
+            className="fixed bottom-36 right-4 z-50 glass-strong rounded-2xl p-4 w-72"
+            style={{ border: '1px solid rgba(255,59,92,0.4)' }}
+            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 20 }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-sm font-bold text-green-400">SOS Ready</div>
+              <button onClick={() => setSent(false)} className="text-slate-500 hover:text-white">
+                <X size={14} />
+              </button>
+            </div>
+
+            <div className="mb-3">
+              <div className="text-xs text-slate-500 mb-1.5">Emergency Numbers:</div>
+              {EMERGENCY_NUMBERS.map(({ label, number }) => (
+                <div key={number} className="flex items-center justify-between text-xs py-0.5">
+                  <span className="text-slate-400">{label}</span>
+                  <a href={`tel:${number}`} className="text-cyan-400 font-bold flex items-center gap-1">
+                    <Phone size={10} /> {number}
+                  </a>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleShare}
+              className="w-full py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2"
+              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.3)', color: '#25D366' }}
+            >
+              <Share2 size={12} /> Share Location
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-end justify-center pb-28 px-4"
+            style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowConfirm(false)}
+          >
+            <motion.div
+              className="glass-strong rounded-2xl p-6 w-full max-w-sm"
+              style={{ border: '1px solid rgba(255,59,92,0.4)' }}
+              initial={{ y: 40, scale: 0.9 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: 40, scale: 0.9 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{ background: 'rgba(255,59,92,0.15)', border: '2px solid rgba(255,59,92,0.5)' }}
+                >
+                  <AlertTriangle size={18} style={{ color: '#FF3B5C' }} />
+                </div>
+                <div>
+                  <div className="text-white font-bold">Emergency SOS</div>
+                  <div className="text-slate-400 text-xs">Prepare emergency contact sharing</div>
+                </div>
+              </div>
+
+              <p className="text-slate-300 text-sm mb-4">
+                This prepares your emergency location so you can call or share it with trusted contacts.
+              </p>
+
+              {userPos && (
+                <div className="text-xs text-slate-500 mb-4">
+                  Location: {userPos.lat.toFixed(4)}, {userPos.lng.toFixed(4)}
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="flex-1 py-3 rounded-xl text-sm font-medium border border-slate-700 text-slate-400 hover:bg-white/5 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmSos}
+                  className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-all"
+                  style={{ background: 'linear-gradient(135deg, #FF3B5C, #FF0040)' }}
+                >
+                  Prepare SOS
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
