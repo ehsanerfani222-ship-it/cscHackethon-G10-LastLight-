@@ -31,7 +31,7 @@ type FilterType = (typeof FILTERS)[number];
 const BLANK_FORM: CreateSafeZoneInput = { name: '', type: 'hospital', lat: 0, lng: 0, address: '', phone: '', notes: '' };
 
 export function SafeZonesPanel() {
-  const { facilities, setFacilities, userLocation, setUserLocation } = useStore();
+  const { facilities, setFacilities, userLocation, setUserLocation, setSavedZones } = useStore();
   const [activeTab, setActiveTab] = useState<ActiveTab>('nearby');
   const [filter, setFilter] = useState<FilterType>('all');
   const [isLoadingLoc, setIsLoadingLoc] = useState(false);
@@ -96,6 +96,9 @@ export function SafeZonesPanel() {
   };
 
   useEffect(() => { if (activeTab === 'saved') loadSaved(); }, [activeTab]);
+
+  // Keep store in sync so MapView can show saved zones
+  useEffect(() => { setSavedZones(saved); }, [saved]);
 
   const openCreate = () => {
     setEditingId(null);
@@ -312,7 +315,7 @@ export function SafeZonesPanel() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
             <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-sm mx-4 rounded-2xl p-5 space-y-3"
+              className="w-full max-w-lg mx-4 rounded-2xl p-6 space-y-3"
               style={{ background: 'rgba(5,8,22,0.98)', border: '1px solid rgba(0,229,255,0.2)' }}>
               <div className="flex items-center justify-between mb-1">
                 <h3 className="text-white font-bold">{editingId ? 'Edit Safe Zone' : 'Add Safe Zone'}</h3>

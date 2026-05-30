@@ -42,8 +42,15 @@ function FlyToUser() {
   return null;
 }
 
+const SAVED_ZONE_ICON = L.divIcon({
+  html: `<div style="font-size:20px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,229,255,0.8))">⭐</div>`,
+  className: '',
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
+
 export function MapView() {
-  const { facilities, setFacilities, userLocation } = useStore();
+  const { facilities, setFacilities, userLocation, savedZones } = useStore();
   const loadedRef = useRef(false);
 
   useEffect(() => {
@@ -60,7 +67,7 @@ export function MapView() {
       <MapContainer
         center={[20, 0]}
         zoom={3}
-        style={{ width: 'calc(100% - 420px)', height: '100%', transition: 'all 0.3s ease', background: '#0a0f1e' }}
+        style={{ width: '100%', height: '100%', background: '#0a0f1e' }}
         zoomControl={false}
       >
         <TileLayer
@@ -83,6 +90,35 @@ export function MapView() {
             </Popup>
           </CircleMarker>
         )}
+
+        {savedZones.map((zone) => (
+          <Marker
+            key={`saved-${zone.id}`}
+            position={[zone.lat, zone.lng]}
+            icon={SAVED_ZONE_ICON}
+          >
+            <Popup>
+              <div style={{ background: '#0a0f1e', color: '#e2e8f0', padding: '10px', borderRadius: '10px', minWidth: '180px' }}>
+                <div style={{ fontWeight: 700, fontSize: '12px', color: '#00E5FF' }}>
+                  ⭐ {zone.name}
+                </div>
+                <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>
+                  {FACILITY_ICONS[zone.type] ?? '📍'} {zone.type.replace('_', ' ')}
+                </div>
+                {zone.address && (
+                  <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>{zone.address}</div>
+                )}
+                {zone.phone && (
+                  <div style={{ fontSize: '11px', color: '#2EF2A3', marginTop: '2px' }}>📞 {zone.phone}</div>
+                )}
+                {zone.notes && (
+                  <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontStyle: 'italic' }}>{zone.notes}</div>
+                )}
+                <div style={{ fontSize: '10px', color: '#334155', marginTop: '6px' }}>My saved zone</div>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
 
         {facilities.map((facility) => (
           <Marker
