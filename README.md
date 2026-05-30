@@ -429,9 +429,9 @@ Future versions will include:
 
 Team :  
 Ehsan Ullah Erfani 68130500873 
-Shikeb Mohebbi
-Jasmin Osamman 
-Intouch 
+Shikeb Mohebbi 68130500872
+Jasmin Osamman 68540460084
+Intouch Iewbandansook 68130500871
 
 s
 
