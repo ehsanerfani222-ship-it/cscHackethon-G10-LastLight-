@@ -54,59 +54,7 @@ export interface Facility {
   distanceKm?: number;
 }
 
-export interface Post {
-  id: string;
-  content: string;
-  type: string;
-  author: { id: string; username: string; avatar: string };
-  crisisId?: string;
-  location: string;
-  imageUrl?: string;
-  createdAt: string;
-  updatedAt?: string;
-  comments: Comment[];
-  reactions: Reaction[];
-  _count: { comments: number; reactions: number };
-}
-
-export interface Comment {
-  id: string;
-  content: string;
-  author: { id?: string; username: string; avatar: string };
-  createdAt: string;
-  updatedAt?: string;
-}
-
-export interface Reaction {
-  id: string;
-  type: string;
-  userId: string;
-  user?: { username: string };
-}
-
-export interface ChatMessage {
-  id: string;
-  content: string;
-  roomId: string;
-  senderId: string;
-  sender: { id: string; username: string; avatar: string };
-  createdAt: string;
-  updatedAt?: string;
-}
-
-export interface ChatRoom {
-  id: string;
-  name: string;
-  description: string;
-  crisisId?: string;
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-  messages: ChatMessage[];
-  _count: { messages: number };
-}
-
-export type AppTab = 'globe' | 'map' | 'community' | 'chat' | 'doctor' | 'safezones' | 'space';
+export type AppTab = 'globe' | 'map' | 'safezones' | 'space';
 
 export interface SpaceEvent {
   id: string;

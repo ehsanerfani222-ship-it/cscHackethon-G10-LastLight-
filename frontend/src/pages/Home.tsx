@@ -11,9 +11,6 @@ import { TimelineSlider } from '../components/Timeline/TimelineSlider';
 import { Navbar } from '../components/Layout/Navbar';
 import { Sidebar } from '../components/Layout/Sidebar';
 import { BottomNav } from '../components/Layout/BottomNav';
-import { CommunityPanel } from '../components/Community/CommunityPanel';
-import { ChatPanel } from '../components/Chat/ChatPanel';
-import { AiDoctorPanel } from '../components/AiDoctor/AiDoctorPanel';
 import { SafeZonesPanel } from '../components/SafeZones/SafeZonesPanel';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
 import { PlanetEventModal } from '../components/Galaxy/PlanetEventModal';
@@ -27,12 +24,10 @@ import { SosButton } from '../components/SOS/SosButton';
 
 export function Home() {
   const { crises, selectedCrisis, selectCrisis, activeTab, pipelineState } = useStore();
-
-  // Connect to real-time AI pipeline via WebSocket
-  usePipeline();
-
   const { events: spaceEvents } = useSpaceEvents();
   const [selectedPlanet, setSelectedPlanet] = useState<string | null>(null);
+
+  usePipeline();
 
   const isGlobeOrMap = activeTab === 'globe' || activeTab === 'map';
   const isSpace = activeTab === 'space';
@@ -43,7 +38,6 @@ export function Home() {
       <Toaster position="top-center" toastOptions={{ style: { maxWidth: 420 } }} />
       <Navbar />
 
-      {/* Globe */}
       <AnimatePresence>
         {isGlobe && (
           <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -52,7 +46,6 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {/* Map */}
       <AnimatePresence>
         {activeTab === 'map' && (
           <motion.div className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -61,7 +54,6 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {/* Space / Solar System */}
       <AnimatePresence>
         {isSpace && (
           <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -71,20 +63,19 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {/* Full panels */}
       <AnimatePresence>
-        {!isGlobeOrMap && !isSpace && (
-          <motion.div className="absolute inset-0 pt-11 pb-14 overflow-hidden"
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}>
-            {activeTab === 'community' && <CommunityPanel />}
-            {activeTab === 'chat' && <ChatPanel />}
-            {activeTab === 'doctor' && <AiDoctorPanel />}
-            {activeTab === 'safezones' && <SafeZonesPanel />}
+        {activeTab === 'safezones' && (
+          <motion.div
+            className="absolute inset-0 pt-11 pb-14 overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+          >
+            <SafeZonesPanel />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Globe/Map overlays */}
       {isGlobeOrMap && (
         <>
           <Sidebar />
@@ -93,10 +84,8 @@ export function Home() {
         </>
       )}
 
-      {/* Globe-specific overlays */}
       {isGlobe && (
         <>
-          {/* Top-right: GTI + Population Counter */}
           <motion.div
             className="fixed top-14 right-4 z-30 flex flex-col gap-2"
             initial={{ x: 40, opacity: 0 }}
@@ -107,7 +96,6 @@ export function Home() {
             <PopulationCounter />
           </motion.div>
 
-          {/* Bottom area above timeline: QuickStats */}
           <motion.div
             className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30"
             initial={{ y: 20, opacity: 0 }}
@@ -117,7 +105,6 @@ export function Home() {
             <QuickStats />
           </motion.div>
 
-          {/* Right of sidebar (below crisis list): Severity Timeline */}
           <motion.div
             className="fixed left-4 bottom-20 z-30 w-64"
             style={{ bottom: 88 }}
@@ -128,7 +115,6 @@ export function Home() {
             <SeverityTimeline />
           </motion.div>
 
-          {/* Threat Radar — bottom right area (above SOS) */}
           <motion.div
             className="fixed right-4 z-30"
             style={{ bottom: 80 }}
@@ -141,7 +127,6 @@ export function Home() {
         </>
       )}
 
-      {/* Pipeline scanning overlay */}
       <AnimatePresence>
         {(pipelineState.status === 'fetching' || pipelineState.status === 'analyzing') && (
           <motion.div
@@ -157,8 +142,8 @@ export function Home() {
             />
             <span className="text-cyan-400 text-xs font-medium">
               {pipelineState.status === 'fetching'
-                ? '🛰️ Collecting data from USGS · NASA · GDACS · ReliefWeb · News...'
-                : '🤖 Claude AI analyzing global threat patterns...'}
+                ? 'Collecting data from USGS, NASA, GDACS, ReliefWeb, and news sources...'
+                : 'Claude AI analyzing global threat patterns...'}
             </span>
           </motion.div>
         )}
@@ -166,8 +151,6 @@ export function Home() {
 
       <BottomNav />
       <CrisisModal crisis={selectedCrisis} onClose={() => selectCrisis(null)} />
-
-      {/* SOS Button — always visible */}
       <SosButton />
     </div>
   );

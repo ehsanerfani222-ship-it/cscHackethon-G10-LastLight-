@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ChatMessage, ChatRoom, Crisis, Facility, Post } from '../types/crisis';
+import type { Crisis, Facility } from '../types/crisis';
 
 const api = axios.create({ baseURL: '/api' });
 
@@ -20,94 +20,6 @@ export const generateCrises = async (): Promise<{ message: string; count: number
 
 export const fetchFacilities = async (lat: number, lng: number, radius = 10000): Promise<Facility[]> => {
   const { data } = await api.get('/facilities/nearby', { params: { lat, lng, radius } });
-  return data;
-};
-
-export const fetchPosts = async (crisisId?: string): Promise<Post[]> => {
-  const { data } = await api.get('/community', { params: crisisId ? { crisisId } : {} });
-  return data;
-};
-
-export const createPost = async (payload: {
-  content: string; type: string; username: string; crisisId?: string; location?: string; imageUrl?: string;
-}): Promise<Post> => {
-  const { data } = await api.post('/community', payload);
-  return data;
-};
-
-export const updatePost = async (postId: string, payload: {
-  content?: string; type?: string; location?: string; imageUrl?: string;
-}): Promise<Post> => {
-  const { data } = await api.patch(`/community/${postId}`, payload);
-  return data;
-};
-
-export const deletePost = async (postId: string): Promise<{ deleted: boolean }> => {
-  const { data } = await api.delete(`/community/${postId}`);
-  return data;
-};
-
-export const addComment = async (postId: string, content: string, username: string) => {
-  const { data } = await api.post(`/community/${postId}/comments`, { content, username });
-  return data;
-};
-
-export const updateComment = async (commentId: string, content: string) => {
-  const { data } = await api.patch(`/community/comments/${commentId}`, { content });
-  return data;
-};
-
-export const deleteComment = async (commentId: string): Promise<{ deleted: boolean }> => {
-  const { data } = await api.delete(`/community/comments/${commentId}`);
-  return data;
-};
-
-export const toggleReaction = async (postId: string, username: string, type: string) => {
-  const { data } = await api.post(`/community/${postId}/reactions`, { username, type });
-  return data;
-};
-
-export const fetchChatRooms = async (crisisId?: string): Promise<ChatRoom[]> => {
-  const { data } = await api.get('/chat/rooms', { params: crisisId ? { crisisId } : {} });
-  return data;
-};
-
-export const createChatRoom = async (payload: {
-  name: string; description?: string; crisisId?: string; username: string;
-}): Promise<ChatRoom> => {
-  const { data } = await api.post('/chat/rooms', payload);
-  return data;
-};
-
-export const updateChatRoom = async (roomId: string, payload: {
-  name?: string; description?: string; crisisId?: string | null;
-}): Promise<ChatRoom> => {
-  const { data } = await api.patch(`/chat/rooms/${roomId}`, payload);
-  return data;
-};
-
-export const deleteChatRoom = async (roomId: string): Promise<{ deleted: boolean }> => {
-  const { data } = await api.delete(`/chat/rooms/${roomId}`);
-  return data;
-};
-
-export const fetchChatMessages = async (roomId: string): Promise<ChatMessage[]> => {
-  const { data } = await api.get(`/chat/rooms/${roomId}/messages`);
-  return data;
-};
-
-export const createChatMessage = async (roomId: string, content: string, username: string): Promise<ChatMessage> => {
-  const { data } = await api.post(`/chat/rooms/${roomId}/messages`, { content, username });
-  return data;
-};
-
-export const updateChatMessage = async (messageId: string, content: string): Promise<ChatMessage> => {
-  const { data } = await api.patch(`/chat/messages/${messageId}`, { content });
-  return data;
-};
-
-export const deleteChatMessage = async (messageId: string): Promise<{ deleted: boolean }> => {
-  const { data } = await api.delete(`/chat/messages/${messageId}`);
   return data;
 };
 
@@ -147,33 +59,5 @@ export const getApiKeyStatus = async (): Promise<{ hasApiKey: boolean; isValid: 
 
 export const saveApiKey = async (apiKey: string) => {
   const { data } = await api.post('/settings/apikey', { apiKey });
-  return data;
-};
-
-export const consultAIDoctor = async (payload: {
-  category: string; symptom: string; bodyArea: string;
-  severity: number; age: number; additionalInfo?: string;
-}) => {
-  const { data } = await api.post('/doctor/consult', payload);
-  return data;
-};
-
-export const getConsultationHistory = async () => {
-  const { data } = await api.get('/doctor/history');
-  return data;
-};
-
-export const getConsultation = async (id: string) => {
-  const { data } = await api.get(`/doctor/history/${id}`);
-  return data;
-};
-
-export const updateConsultation = async (id: string, additionalInfo: string) => {
-  const { data } = await api.put(`/doctor/history/${id}`, { additionalInfo });
-  return data;
-};
-
-export const deleteConsultation = async (id: string): Promise<{ deleted: boolean }> => {
-  const { data } = await api.delete(`/doctor/history/${id}`);
   return data;
 };
