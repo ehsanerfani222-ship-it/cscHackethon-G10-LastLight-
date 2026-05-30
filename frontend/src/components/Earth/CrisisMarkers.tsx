@@ -31,6 +31,9 @@ function CrisisMarker({ crisis, onClick }: MarkerProps) {
   const color = useMemo(() => severityColor(crisis.severity), [crisis.severity]);
   const position = useMemo(() => latLngToVector3(crisis.lat, crisis.lng, 2.02), [crisis.lat, crisis.lng]);
 
+  // Track pointer-down position to distinguish click from drag
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
+
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     if (ringRef.current) {
@@ -48,20 +51,37 @@ function CrisisMarker({ crisis, onClick }: MarkerProps) {
   const normal = position.clone().normalize();
   const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
 
-  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    onClick(crisis);
+    pointerDownPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    if (!pointerDownPos.current) return;
+    const dx = e.clientX - pointerDownPos.current.x;
+    const dy = e.clientY - pointerDownPos.current.y;
+    // Only fire click if pointer barely moved (not a drag)
+    if (Math.sqrt(dx * dx + dy * dy) < 6) {
+      onClick(crisis);
+    }
+    pointerDownPos.current = null;
   };
 
   return (
     <group position={position} quaternion={quaternion}>
+      {/* Large invisible hit area — makes clicking much easier */}
+      <mesh onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+        <circleGeometry args={[0.12, 16]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
       {/* Pulse ring */}
-      <mesh ref={ringRef} onClick={handleClick}>
+      <mesh ref={ringRef}>
         <ringGeometry args={[0.025, 0.045, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.4} side={THREE.DoubleSide} />
       </mesh>
       {/* Core dot */}
-      <mesh ref={coreRef} onClick={handleClick}>
+      <mesh ref={coreRef}>
         <circleGeometry args={[0.018, 16]} />
         <meshBasicMaterial color={color} transparent opacity={0.9} />
       </mesh>

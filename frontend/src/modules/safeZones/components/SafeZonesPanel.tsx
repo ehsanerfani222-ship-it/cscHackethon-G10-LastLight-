@@ -95,6 +95,9 @@ export function SafeZonesPanel() {
     finally { setIsLoadingSaved(false); }
   };
 
+  // Load on mount so the map shows saved zones immediately (before user opens the tab)
+  useEffect(() => { loadSaved(); }, []);
+  // Reload whenever the user switches to the saved tab (picks up any changes)
   useEffect(() => { if (activeTab === 'saved') loadSaved(); }, [activeTab]);
 
   // Keep store in sync so MapView can show saved zones

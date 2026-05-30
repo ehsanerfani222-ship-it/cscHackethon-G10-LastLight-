@@ -91,7 +91,7 @@ export function MapView() {
           </CircleMarker>
         )}
 
-        {savedZones.map((zone) => (
+        {userLocation && savedZones.map((zone) => (
           <Marker
             key={`saved-${zone.id}`}
             position={[zone.lat, zone.lng]}

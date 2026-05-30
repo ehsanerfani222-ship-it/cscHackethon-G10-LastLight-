@@ -17,12 +17,9 @@ import { EmergencyPanel } from '../modules/emergency/components/EmergencyPanel';
 import { SafeZonesPage } from '../modules/safeZones/pages/SafeZonesPage';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
 import { PlanetEventModal } from '../components/Galaxy/PlanetEventModal';
-import { PredictionsPanel } from '../components/Pipeline/PredictionsPanel';
 import { GlobalThreatIndex } from '../components/Dashboard/GlobalThreatIndex';
 import { PopulationCounter } from '../components/Dashboard/PopulationCounter';
-import { SeverityTimeline } from '../components/Dashboard/SeverityTimeline';
 import { QuickStats } from '../components/Dashboard/QuickStats';
-import { ThreatRadar } from '../components/Radar/ThreatRadar';
 import { SosButton } from '../components/SOS/SosButton';
 
 export function Home() {
@@ -89,7 +86,6 @@ export function Home() {
       {isGlobe && (
         <>
           <Sidebar />
-          <PredictionsPanel />
           <TimelineSlider />
         </>
       )}
@@ -115,25 +111,6 @@ export function Home() {
             <QuickStats />
           </motion.div>
 
-          <motion.div
-            className="fixed left-4 bottom-20 z-30 w-64"
-            style={{ bottom: 88 }}
-            initial={{ x: -40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            <SeverityTimeline />
-          </motion.div>
-
-          <motion.div
-            className="fixed right-4 z-30"
-            style={{ bottom: 80 }}
-            initial={{ x: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <ThreatRadar />
-          </motion.div>
         </>
       )}
 

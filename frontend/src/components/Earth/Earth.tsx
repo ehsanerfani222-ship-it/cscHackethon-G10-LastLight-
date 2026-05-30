@@ -8,40 +8,22 @@ import { CrisisMarkers } from './CrisisMarkers';
 import type { Crisis } from '../../types/crisis';
 
 const EARTH_DAY = 'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg';
-const EARTH_NIGHT = 'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg';
-const EARTH_CLOUDS = 'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-water.png';
 
+// Static earth mesh — no internal rotation. Parent group handles rotation.
 function EarthMesh() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const cloudsRef = useRef<THREE.Mesh>(null);
-
-  const [dayMap, nightMap, cloudMap] = useTexture([EARTH_DAY, EARTH_NIGHT, EARTH_CLOUDS]);
-
-  useFrame((_, delta) => {
-    if (meshRef.current) meshRef.current.rotation.y += delta * 0.04;
-    if (cloudsRef.current) cloudsRef.current.rotation.y += delta * 0.05;
-  });
+  const [dayMap] = useTexture([EARTH_DAY]);
 
   return (
-    <>
-      <mesh ref={meshRef}>
-        <sphereGeometry args={[2, 64, 64]} />
-        <meshPhongMaterial
-          map={dayMap}
-          emissiveMap={nightMap}
-          emissive={new THREE.Color(0x334466)}
-          emissiveIntensity={0.4}
-          specularMap={cloudMap}
-          specular={new THREE.Color(0x888888)}
-          shininess={15}
-        />
-      </mesh>
-      {/* Cloud layer */}
-      <mesh ref={cloudsRef} scale={[1.003, 1.003, 1.003]}>
-        <sphereGeometry args={[2, 64, 64]} />
-        <meshPhongMaterial map={cloudMap} transparent opacity={0.28} depthWrite={false} />
-      </mesh>
-    </>
+    <mesh>
+      <sphereGeometry args={[2, 64, 64]} />
+      <meshPhongMaterial
+        map={dayMap}
+        emissive={new THREE.Color(0x112244)}
+        emissiveIntensity={0.12}
+        specular={new THREE.Color(0x333333)}
+        shininess={10}
+      />
+    </mesh>
   );
 }
 
@@ -56,6 +38,27 @@ function LoadingEarth() {
   );
 }
 
+interface RotatingGlobeProps { crises: Crisis[]; onSelect: (c: Crisis) => void; }
+
+// Single rotating group — Earth mesh + crisis markers spin together so
+// markers always stay locked to the correct lat/lng on the surface.
+function RotatingGlobe({ crises, onSelect }: RotatingGlobeProps) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (groupRef.current) groupRef.current.rotation.y += delta * 0.04;
+  });
+
+  return (
+    <group ref={groupRef}>
+      <Suspense fallback={<LoadingEarth />}>
+        <EarthMesh />
+      </Suspense>
+      <CrisisMarkers crises={crises} onSelect={onSelect} />
+    </group>
+  );
+}
+
 interface SceneProps { crises: Crisis[]; onSelect: (c: Crisis) => void; }
 
 function Scene({ crises, onSelect }: SceneProps) {
@@ -65,12 +68,9 @@ function Scene({ crises, onSelect }: SceneProps) {
       <directionalLight position={[5, 3, 5]} intensity={1.4} />
       <directionalLight position={[-8, -2, -5]} intensity={0.15} color="#4488ff" />
       <Starfield />
-      <Suspense fallback={<LoadingEarth />}>
-        <EarthMesh />
-      </Suspense>
+      <RotatingGlobe crises={crises} onSelect={onSelect} />
       <Atmosphere />
-      <CrisisMarkers crises={crises} onSelect={onSelect} />
-      <OrbitControls enablePan={false} minDistance={2.8} maxDistance={14} dampingFactor={0.08} enableDamping />
+      <OrbitControls enablePan={false} minDistance={2.8} maxDistance={14} dampingFactor={0.08} enableDamping rotateSpeed={0.5} />
     </>
   );
 }
