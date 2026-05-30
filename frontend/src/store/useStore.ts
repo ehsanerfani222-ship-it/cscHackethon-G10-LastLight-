@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { Crisis, Facility, AppTab, PipelineState, Prediction } from '../types/crisis';
+import type { SavedSafeZone } from '../modules/ossma/types/safezone.types';
 
 interface AppState {
   crises: Crisis[];
@@ -30,6 +31,10 @@ interface AppState {
   dismissNotification: (id: string) => void;
   setPipelineState: (s: PipelineState) => void;
   setPredictions: (p: Prediction[]) => void;
+  posts: unknown[];
+  setPosts: (p: unknown[]) => void;
+  savedZones: SavedSafeZone[];
+  setSavedZones: (z: SavedSafeZone[]) => void;
 }
 
 const defaultPipeline: PipelineState = {
@@ -56,6 +61,8 @@ export const useStore = create<AppState>((set) => ({
   notifications: [],
   pipelineState: defaultPipeline,
   predictions: [],
+  posts: [],
+  savedZones: [],
 
   setCrises: (crises) => set({ crises }),
   selectCrisis: (selectedCrisis) => set({ selectedCrisis }),
@@ -78,4 +85,6 @@ export const useStore = create<AppState>((set) => ({
   })),
   setPipelineState: (pipelineState) => set({ pipelineState }),
   setPredictions: (predictions) => set({ predictions }),
+  setPosts: (posts) => set({ posts }),
+  setSavedZones: (savedZones) => set({ savedZones }),
 }));

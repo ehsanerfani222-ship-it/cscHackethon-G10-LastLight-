@@ -54,7 +54,30 @@ export interface Facility {
   distanceKm?: number;
 }
 
-export type AppTab = 'globe' | 'map' | 'safezones' | 'space';
+export type AppTab = 'globe' | 'map' | 'community' | 'doctor' | 'safezones' | 'emergency' | 'space';
+
+export interface Comment {
+  id: string;
+  content: string;
+  author: { username: string; avatar?: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Post {
+  id: string;
+  content: string;
+  type: string;
+  author: { username: string; avatar?: string };
+  location?: string;
+  crisisId?: string;
+  imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+  comments: Comment[];
+  reactions: { id: string; type: string; userId: string; user?: { username: string } }[];
+  _count: { comments: number; reactions: number };
+}
 
 export interface SpaceEvent {
   id: string;

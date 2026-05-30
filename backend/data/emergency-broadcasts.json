@@ -1,0 +1,239 @@
+[
+  {
+    "id": "f68d3372-fbd7-4be4-b203-de28dc8f339c",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.651630530160967,
+    "longitude": 100.49465049439908,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [],
+    "createdAt": "2026-05-30T08:37:05.793Z"
+  },
+  {
+    "id": "b5ed347d-2e7d-49fe-80eb-d42eb14ce615",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.651630530160967,
+    "longitude": 100.49465049439908,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [],
+    "createdAt": "2026-05-30T08:36:58.947Z"
+  },
+  {
+    "id": "0599460e-861d-4b7e-986c-f98a5ae32b16",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.651630530160967,
+    "longitude": 100.49465049439908,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [],
+    "createdAt": "2026-05-30T08:36:53.588Z"
+  },
+  {
+    "id": "28ea0e1c-64e1-4e19-8b07-3f6c2a8baa7b",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.65163069887736,
+    "longitude": 100.49465025516723,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [],
+    "createdAt": "2026-05-30T08:36:45.467Z"
+  },
+  {
+    "id": "63fdf7d1-0495-4d3f-94da-9bce81e37ffd",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.65163069887736,
+    "longitude": 100.49465025516723,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [],
+    "createdAt": "2026-05-30T08:36:39.645Z"
+  },
+  {
+    "id": "9b2983a3-c649-4d61-932e-59ffe7d4b1b3",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.65163069887736,
+    "longitude": 100.49465025516723,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [
+      {
+        "id": "38f79128-aeac-4a5e-8752-4ec64bd746c8",
+        "content": "what u need help with man?",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:22.577Z"
+      }
+    ],
+    "createdAt": "2026-05-30T08:36:14.880Z"
+  },
+  {
+    "id": "44c46cdc-f0e3-4d6f-9f70-b9833c2f2ff5",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.651634486174958,
+    "longitude": 100.4946457581148,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "responses": [
+      {
+        "id": "c79e8726-f40a-4b97-983d-dafc38703265",
+        "content": "test",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:01.575Z"
+      },
+      {
+        "id": "c40c687d-9570-4faf-b036-86eaae8e3166",
+        "content": "hello",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:03.859Z"
+      },
+      {
+        "id": "62e7fe44-125c-408f-9550-1186a9e1e8b6",
+        "content": "wassup",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:06.112Z"
+      },
+      {
+        "id": "c6a84ca8-6b7c-46d0-a4e0-7eb65f29bd8f",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:28.893Z"
+      },
+      {
+        "id": "89306c3c-ba9f-45f2-8180-63c1b98515da",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:29.245Z"
+      },
+      {
+        "id": "418e8b44-ec9f-4019-a557-883521fd7494",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:29.485Z"
+      },
+      {
+        "id": "38842545-0d08-4ab5-ab8e-e4152bfee717",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:29.685Z"
+      },
+      {
+        "id": "6ce1a901-0b2c-4284-ad7a-409de881246a",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:29.878Z"
+      },
+      {
+        "id": "340457a8-1a03-4c31-9c24-4dcff4402855",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:30.065Z"
+      },
+      {
+        "id": "82c6c158-21db-43d5-9a1e-f817b90d49fe",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:31.242Z"
+      },
+      {
+        "id": "d46d9625-9440-4ffc-b562-cfe84de69f84",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:31.422Z"
+      },
+      {
+        "id": "c8f8ae78-1093-4de4-8edb-bc35bd6d22ab",
+        "content": "t",
+        "author": {
+          "id": "intouch",
+          "username": "Intouch",
+          "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+        },
+        "createdAt": "2026-05-30T08:36:31.600Z"
+      }
+    ],
+    "createdAt": "2026-05-30T08:35:53.693Z"
+  }
+]

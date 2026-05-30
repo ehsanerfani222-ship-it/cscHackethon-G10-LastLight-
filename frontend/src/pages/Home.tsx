@@ -12,6 +12,10 @@ import { Navbar } from '../components/Layout/Navbar';
 import { Sidebar } from '../components/Layout/Sidebar';
 import { BottomNav } from '../components/Layout/BottomNav';
 import { SafeZonesPanel } from '../components/SafeZones/SafeZonesPanel';
+import { CommunityPanel } from '../components/Community/CommunityPanel';
+import { AiDoctorPanel } from '../components/AiDoctor/AiDoctorPanel';
+import { EmergencyPanel } from '../components/Emergency/EmergencyPanel';
+import { SafeZonesPage } from '../modules/ossma/pages/SafeZonesPage';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
 import { PlanetEventModal } from '../components/Galaxy/PlanetEventModal';
 import { PredictionsPanel } from '../components/Pipeline/PredictionsPanel';
@@ -64,14 +68,30 @@ export function Home() {
       </AnimatePresence>
 
       <AnimatePresence>
+        {activeTab === 'community' && (
+          <motion.div key="community" className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <CommunityPanel />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeTab === 'doctor' && (
+          <motion.div key="doctor" className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <AiDoctorPanel />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
         {activeTab === 'safezones' && (
-          <motion.div
-            className="absolute inset-0 pt-11 pb-14 overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-          >
-            <SafeZonesPanel />
+          <motion.div key="safezones" className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <SafeZonesPage />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeTab === 'emergency' && (
+          <motion.div key="emergency" className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <EmergencyPanel />
           </motion.div>
         )}
       </AnimatePresence>

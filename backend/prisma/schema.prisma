@@ -26,4 +26,87 @@ model Crisis {
   predictionNote     String   @default("")
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  posts              Post[]
+}
+
+model User {
+  id        String     @id @default(uuid())
+  username  String     @unique
+  avatar    String     @default("")
+  bio       String     @default("")
+  createdAt DateTime   @default(now())
+  posts     Post[]
+  comments  Comment[]
+  reactions Reaction[]
+}
+
+model Post {
+  id        String     @id @default(uuid())
+  content   String
+  type      String     @default("discussion")
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id])
+  crisisId  String?
+  crisis    Crisis?    @relation(fields: [crisisId], references: [id], onDelete: SetNull)
+  location  String     @default("")
+  imageUrl  String     @default("")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  comments  Comment[]
+  reactions Reaction[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reaction {
+  id        String   @id @default(uuid())
+  type      String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  @@unique([postId, userId, type])
+}
+
+model SafeZone {
+  id        String   @id @default(uuid())
+  name      String
+  type      String
+  lat       Float
+  lng       Float
+  address   String   @default("")
+  phone     String   @default("")
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Consultation {
+  id             String   @id @default(uuid())
+  category       String
+  symptom        String
+  bodyArea       String
+  severity       Int
+  age            Int
+  additionalInfo String?
+  urgencyLevel   String
+  urgencyColor   String
+  headline       String
+  immediateSteps String
+  doNotDo        String
+  whenToCallEmergency String
+  recoveryTips   String
+  disclaimer     String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

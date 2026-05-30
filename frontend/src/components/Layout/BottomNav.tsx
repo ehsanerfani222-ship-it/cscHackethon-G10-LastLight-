@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion';
-import { Globe, Map, Shield, Orbit } from 'lucide-react';
+import { Globe, Map, Users, Stethoscope, Shield, Siren, Orbit } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import type { AppTab } from '../../types/crisis';
 
 const TABS: { id: AppTab; label: string; icon: React.ReactNode }[] = [
-  { id: 'globe', label: 'Globe', icon: <Globe size={18} /> },
-  { id: 'map', label: 'Map', icon: <Map size={18} /> },
+  { id: 'globe',     label: 'Globe',      icon: <Globe size={18} /> },
+  { id: 'map',       label: 'Map',        icon: <Map size={18} /> },
+  { id: 'community', label: 'Community',  icon: <Users size={18} /> },
+  { id: 'doctor',    label: 'AI Doctor',  icon: <Stethoscope size={18} /> },
   { id: 'safezones', label: 'Safe Zones', icon: <Shield size={18} /> },
-  { id: 'space', label: 'Space', icon: <Orbit size={18} /> },
+  { id: 'emergency', label: 'Emergency',  icon: <Siren size={18} /> },
+  { id: 'space',     label: 'Space',      icon: <Orbit size={18} /> },
 ];
 
 export function BottomNav() {
