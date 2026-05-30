@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Plus, MessageCircle, AlertTriangle, Share2, Send, X, Pencil, Trash2, Check } from 'lucide-react';
-import { useStore } from '../../store/useStore';
+import { useStore } from '../../../store/useStore';
 import {
   addComment,
   createPost,
@@ -11,8 +11,8 @@ import {
   toggleReaction,
   updateComment,
   updatePost,
-} from '../../services/api';
-import type { Comment, Post } from '../../types/crisis';
+} from '../../../services/api';
+import type { Comment, Post } from '../../../types/crisis';
 import toast from 'react-hot-toast';
 
 const POST_TYPES = [

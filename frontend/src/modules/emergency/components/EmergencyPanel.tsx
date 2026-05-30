@@ -15,10 +15,10 @@ import {
   ShieldAlert,
   UserRound,
 } from 'lucide-react';
-import { SosButton } from '../SOS/SosButton';
-import { createEmergencyResponse, fetchEmergencyBroadcasts } from '../../services/api';
-import { useEmergencyStore } from '../../store/useEmergencyStore';
-import type { EmergencyBroadcast } from '../../types/emergency';
+import { SosButton } from '../../../components/SOS/SosButton';
+import { createEmergencyResponse, fetchEmergencyBroadcasts } from '../../../services/api';
+import { useEmergencyStore } from '../store/useEmergencyStore';
+import type { EmergencyBroadcast } from '../types/emergency';
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();

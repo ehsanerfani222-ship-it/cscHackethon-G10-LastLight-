@@ -18,7 +18,7 @@ import {
   getConsultation,
   getConsultationHistory,
   updateConsultation,
-} from '../../services/api';
+} from '../../../services/api';
 
 const CATEGORIES = [
   { value: 'injury', label: 'Injury', icon: 'IN', desc: 'Cuts, burns, fractures' },

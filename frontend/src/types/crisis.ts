@@ -54,7 +54,7 @@ export interface Facility {
   distanceKm?: number;
 }
 
-export type AppTab = 'globe' | 'map' | 'community' | 'doctor' | 'safezones' | 'emergency' | 'space';
+export type AppTab = 'globe' | 'community' | 'doctor' | 'safezones' | 'emergency' | 'space';
 
 export interface Comment {
   id: string;

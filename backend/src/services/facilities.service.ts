@@ -20,57 +20,96 @@ const AMENITY_TYPE_MAP: Record<string, Facility['type']> = {
   police: 'police',
 };
 
+const AMENITY_TYPES = Object.keys(AMENITY_TYPE_MAP);
+
+// In-memory cache keyed by rounded coords + radius (5 min TTL)
+const cache = new Map<string, { data: Facility[]; ts: number }>();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+interface NominatimResult {
+  place_id: number;
+  lat: string;
+  lon: string;
+  display_name: string;
+  name?: string;
+  type?: string;
+  address?: {
+    amenity?: string;
+    road?: string;
+    city?: string;
+    town?: string;
+    phone?: string;
+  };
+  extratags?: { phone?: string; 'contact:phone'?: string };
+}
+
+async function fetchAmenityFromNominatim(
+  amenity: string,
+  lat: number,
+  lng: number,
+  radiusMeters: number
+): Promise<Facility[]> {
+  // Build a bounding box from the radius (rough approximation)
+  const degOffset = (radiusMeters / 111320);
+  const viewbox = `${lng - degOffset},${lat - degOffset},${lng + degOffset},${lat + degOffset}`;
+
+  const { data } = await axios.get<NominatimResult[]>('https://nominatim.openstreetmap.org/search', {
+    params: {
+      format: 'json',
+      amenity,
+      limit: 30,
+      bounded: 1,
+      viewbox,
+      addressdetails: 1,
+      extratags: 1,
+    },
+    headers: { 'User-Agent': 'LastLight-HackathonApp/1.0' },
+    timeout: 15000,
+  });
+
+  return data.map((item) => {
+    const elLat = parseFloat(item.lat);
+    const elLng = parseFloat(item.lon);
+    return {
+      id: item.place_id,
+      type: AMENITY_TYPE_MAP[amenity] ?? 'clinic',
+      name: item.name ?? item.address?.amenity ?? amenityLabel(amenity),
+      lat: elLat,
+      lng: elLng,
+      address: [item.address?.road, item.address?.city ?? item.address?.town]
+        .filter(Boolean).join(', '),
+      phone: item.extratags?.phone ?? item.extratags?.['contact:phone'] ?? item.address?.phone,
+      distanceKm: Math.round(haversineKm(lat, lng, elLat, elLng) * 10) / 10,
+    };
+  });
+}
+
 export async function getNearbyFacilities(lat: number, lng: number, radiusMeters = 10000): Promise<Facility[]> {
-  const query = `
-    [out:json][timeout:15];
-    (
-      node["amenity"~"hospital|clinic|school|fire_station|pharmacy|police"](around:${radiusMeters},${lat},${lng});
-      way["amenity"~"hospital|clinic|school|fire_station|pharmacy|police"](around:${radiusMeters},${lat},${lng});
-    );
-    out center tags;
-  `;
+  const cacheKey = `${lat.toFixed(3)},${lng.toFixed(3)},${radiusMeters}`;
+  const cached = cache.get(cacheKey);
+  if (cached && Date.now() - cached.ts < CACHE_TTL_MS) return cached.data;
 
-  const response = await axios.post(
-    'https://overpass-api.de/api/interpreter',
-    `data=${encodeURIComponent(query)}`,
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, timeout: 20000 }
-  );
+  const results: Facility[] = [];
 
-  const elements: Array<{
-    id: number;
-    type: string;
-    lat?: number;
-    lon?: number;
-    center?: { lat: number; lon: number };
-    tags?: Record<string, string>;
-  }> = response.data.elements ?? [];
+  // Fetch each amenity type sequentially with a small delay (Nominatim rate limit: 1 req/s)
+  for (const amenity of AMENITY_TYPES) {
+    try {
+      const facilities = await fetchAmenityFromNominatim(amenity, lat, lng, radiusMeters);
+      results.push(...facilities);
+    } catch {
+      // Skip this amenity type if it fails
+    }
+    await sleep(1100); // Respect Nominatim's 1 req/s policy
+  }
 
-  return elements
-    .filter((el) => {
-      const lat = el.lat ?? el.center?.lat;
-      const lon = el.lon ?? el.center?.lon;
-      return lat !== undefined && lon !== undefined;
-    })
-    .map((el) => {
-      const elLat = (el.lat ?? el.center?.lat)!;
-      const elLng = (el.lon ?? el.center?.lon)!;
-      const amenity = el.tags?.amenity ?? '';
-      const facilityType = AMENITY_TYPE_MAP[amenity] ?? 'clinic';
-      const distKm = haversineKm(lat, lng, elLat, elLng);
-
-      return {
-        id: el.id,
-        type: facilityType,
-        name: el.tags?.name ?? el.tags?.['name:en'] ?? amenityLabel(amenity),
-        lat: elLat,
-        lng: elLng,
-        address: [el.tags?.['addr:street'], el.tags?.['addr:city']].filter(Boolean).join(', '),
-        phone: el.tags?.phone ?? el.tags?.['contact:phone'],
-        distanceKm: Math.round(distKm * 10) / 10,
-      };
-    })
+  const result = results
     .sort((a, b) => (a.distanceKm ?? 99) - (b.distanceKm ?? 99))
-    .slice(0, 50);
+    .slice(0, 60);
+
+  cache.set(cacheKey, { data: result, ts: Date.now() });
+  return result;
 }
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {

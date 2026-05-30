@@ -3,7 +3,7 @@ import { SafeZonesPanel } from '../components/SafeZonesPanel';
 
 export function SafeZonesPage() {
   return (
-    <div className="w-screen h-screen flex" style={{ background: '#050816' }}>
+    <div className="w-full h-full flex" style={{ background: '#050816' }}>
       <div className="flex-1 relative">
         <MapView />
       </div>

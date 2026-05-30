@@ -5,16 +5,15 @@ import { useStore } from '../store/useStore';
 import { usePipeline } from '../hooks/usePipeline';
 import { useSpaceEvents } from '../hooks/useSpaceEvents';
 import { Earth } from '../components/Earth/Earth';
-import { MapView } from '../components/Map/MapView';
 import { CrisisModal } from '../components/Crisis/CrisisModal';
 import { TimelineSlider } from '../components/Timeline/TimelineSlider';
 import { Navbar } from '../components/Layout/Navbar';
 import { Sidebar } from '../components/Layout/Sidebar';
 import { BottomNav } from '../components/Layout/BottomNav';
 import { SafeZonesPanel } from '../components/SafeZones/SafeZonesPanel';
-import { CommunityPanel } from '../components/Community/CommunityPanel';
-import { AiDoctorPanel } from '../components/AiDoctor/AiDoctorPanel';
-import { EmergencyPanel } from '../components/Emergency/EmergencyPanel';
+import { CommunityPanel } from '../modules/community/components/CommunityPanel';
+import { AiDoctorPanel } from '../modules/doctor/components/AiDoctorPanel';
+import { EmergencyPanel } from '../modules/emergency/components/EmergencyPanel';
 import { SafeZonesPage } from '../modules/ossma/pages/SafeZonesPage';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
 import { PlanetEventModal } from '../components/Galaxy/PlanetEventModal';
@@ -33,7 +32,6 @@ export function Home() {
 
   usePipeline();
 
-  const isGlobeOrMap = activeTab === 'globe' || activeTab === 'map';
   const isSpace = activeTab === 'space';
   const isGlobe = activeTab === 'globe';
 
@@ -46,14 +44,6 @@ export function Home() {
         {isGlobe && (
           <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Earth crises={crises} onSelectCrisis={selectCrisis} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {activeTab === 'map' && (
-          <motion.div className="absolute inset-0 pt-11 pb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <MapView onSelectCrisis={selectCrisis} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -96,11 +86,11 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {isGlobeOrMap && (
+      {isGlobe && (
         <>
           <Sidebar />
           <PredictionsPanel />
-          {isGlobe && <TimelineSlider />}
+          <TimelineSlider />
         </>
       )}
 
