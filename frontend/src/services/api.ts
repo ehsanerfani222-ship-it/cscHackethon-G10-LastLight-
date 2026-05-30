@@ -157,3 +157,23 @@ export const consultAIDoctor = async (payload: {
   const { data } = await api.post('/doctor/consult', payload);
   return data;
 };
+
+export const getConsultationHistory = async () => {
+  const { data } = await api.get('/doctor/history');
+  return data;
+};
+
+export const getConsultation = async (id: string) => {
+  const { data } = await api.get(`/doctor/history/${id}`);
+  return data;
+};
+
+export const updateConsultation = async (id: string, additionalInfo: string) => {
+  const { data } = await api.put(`/doctor/history/${id}`, { additionalInfo });
+  return data;
+};
+
+export const deleteConsultation = async (id: string): Promise<{ deleted: boolean }> => {
+  const { data } = await api.delete(`/doctor/history/${id}`);
+  return data;
+};
