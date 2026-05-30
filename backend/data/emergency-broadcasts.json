@@ -1,0 +1,16 @@
+[
+  {
+    "id": "f53d8d77-8762-4105-b3ce-1ac0cd745d56",
+    "content": "🆘 SOS EMERGENCY — User at [13.65163, 100.49465] needs immediate assistance. Sent via LASTLIGHT Emergency System.",
+    "type": "sos",
+    "location": "13.65163, 100.49465",
+    "latitude": 13.651627790308254,
+    "longitude": 100.49464790007752,
+    "author": {
+      "id": "intouch",
+      "username": "Intouch",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Intouch"
+    },
+    "createdAt": "2026-05-30T05:57:42.582Z"
+  }
+]
