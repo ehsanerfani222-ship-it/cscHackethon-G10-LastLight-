@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Crisis, Facility, AppTab, PipelineState, Prediction } from '../types/crisis';
-import type { SavedSafeZone } from '../modules/ossma/types/safezone.types';
+import type { SavedSafeZone } from '../modules/safeZones/types/safezone.types';
 
 interface AppState {
   crises: Crisis[];

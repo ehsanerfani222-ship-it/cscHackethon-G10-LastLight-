@@ -14,7 +14,7 @@ import { SafeZonesPanel } from '../components/SafeZones/SafeZonesPanel';
 import { CommunityPanel } from '../modules/community/components/CommunityPanel';
 import { AiDoctorPanel } from '../modules/doctor/components/AiDoctorPanel';
 import { EmergencyPanel } from '../modules/emergency/components/EmergencyPanel';
-import { SafeZonesPage } from '../modules/ossma/pages/SafeZonesPage';
+import { SafeZonesPage } from '../modules/safeZones/pages/SafeZonesPage';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
 import { PlanetEventModal } from '../components/Galaxy/PlanetEventModal';
 import { PredictionsPanel } from '../components/Pipeline/PredictionsPanel';
