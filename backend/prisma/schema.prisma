@@ -103,3 +103,23 @@ model ChatMessage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Consultation {
+  id                  String   @id @default(cuid())
+  category            String
+  symptom             String
+  bodyArea            String
+  severity            Int
+  age                 Int
+  additionalInfo      String?
+  urgencyLevel        String
+  urgencyColor        String
+  headline            String
+  immediateSteps      String
+  doNotDo             String
+  whenToCallEmergency String
+  recoveryTips        String
+  disclaimer          String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
