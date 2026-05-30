@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Plus, MessageCircle, AlertTriangle, Share2, Send, X, Pencil, Trash2, Check } from 'lucide-react';
+import { Users, Plus, MessageCircle, AlertTriangle, Share2, Send, X, Pencil, Trash2, Check, LogOut } from 'lucide-react';
+import { AuthModal } from './AuthModal';
 import { useStore } from '../../../store/useStore';
 import {
   addComment,
@@ -293,9 +294,9 @@ function PostCard({
 export function CommunityPanel() {
   const { posts, setPosts, username, setUsername, selectedCrisis } = useStore();
   const [showCreate, setShowCreate] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const [newContent, setNewContent] = useState('');
   const [newType, setNewType] = useState('discussion');
-  const [nameInput, setNameInput] = useState(username);
   const [isPosting, setIsPosting] = useState(false);
 
   useEffect(() => {
@@ -329,6 +330,11 @@ export function CommunityPanel() {
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#050816' }}>
+      {/* Auth modal */}
+      <AnimatePresence>
+        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="px-4 py-4 flex items-center justify-between flex-shrink-0"
         style={{ borderBottom: '1px solid rgba(0,229,255,0.1)', background: 'rgba(5,8,22,0.95)' }}>
@@ -336,85 +342,114 @@ export function CommunityPanel() {
           <Users size={18} className="text-cyan-400" />
           <div>
             <div className="text-white font-bold text-base">Crisis Community</div>
-            <div className="text-slate-500 text-xs">Coordinate, share, survive</div>
+            {username
+              ? <div className="text-slate-500 text-xs">Signed in as <span className="text-cyan-400">{username}</span></div>
+              : <div className="text-slate-500 text-xs">Coordinate, share, survive</div>}
           </div>
         </div>
-        <button onClick={() => setShowCreate((v) => !v)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all"
-          style={{ background: 'rgba(0,229,255,0.12)', border: '1px solid rgba(0,229,255,0.25)', color: '#00E5FF' }}>
-          {showCreate ? <X size={14} /> : <Plus size={14} />}
-          {showCreate ? 'Cancel' : 'Post'}
-        </button>
+        <div className="flex items-center gap-2">
+          {username ? (
+            <>
+              <button onClick={() => setShowCreate((v) => !v)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all"
+                style={{ background: 'rgba(0,229,255,0.12)', border: '1px solid rgba(0,229,255,0.25)', color: '#00E5FF' }}>
+                {showCreate ? <X size={14} /> : <Plus size={14} />}
+                {showCreate ? 'Cancel' : 'Post'}
+              </button>
+              <button onClick={() => { setUsername(''); toast.success('Signed out'); }}
+                title="Sign out"
+                className="p-2 rounded-xl text-slate-500 hover:text-red-400 transition-colors"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <LogOut size={14} />
+              </button>
+            </>
+          ) : (
+            <button onClick={() => setShowAuth(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all"
+              style={{ background: 'linear-gradient(135deg,rgba(0,229,255,0.15),rgba(46,242,163,0.15))', border: '1px solid rgba(0,229,255,0.3)', color: '#00E5FF' }}>
+              <Users size={14} /> Sign In
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Username setup */}
+      {/* Not logged in — show auth prompt over the feed */}
       {!username && (
-        <div className="mx-4 mt-3 p-3 rounded-xl flex gap-2"
-          style={{ background: 'rgba(255,200,0,0.06)', border: '1px solid rgba(255,200,0,0.2)' }}>
-          <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}
-            placeholder="Set your username to participate"
-            className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 outline-none" />
-          <button onClick={() => setUsername(nameInput.trim())}
-            disabled={!nameInput.trim()}
-            className="px-3 py-1 rounded-lg text-xs font-semibold text-black"
-            style={{ background: '#FFC857' }}>Join</button>
+        <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
+            style={{ background: 'rgba(0,229,255,0.08)', border: '1px solid rgba(0,229,255,0.2)' }}>
+            <Users size={28} className="text-cyan-400" />
+          </div>
+          <div>
+            <p className="text-white font-semibold text-base mb-1">Join the Community</p>
+            <p className="text-slate-500 text-sm">Sign in or create an account to post updates, share safety tips, and coordinate crisis response.</p>
+          </div>
+          <button onClick={() => setShowAuth(true)}
+            className="px-6 py-2.5 rounded-xl text-sm font-bold text-black"
+            style={{ background: 'linear-gradient(135deg, #00E5FF, #2EF2A3)' }}>
+            Sign In / Register
+          </button>
         </div>
       )}
 
-      {/* Create post */}
-      <AnimatePresence>
-        {showCreate && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }} className="mx-4 mt-3 rounded-2xl p-4 space-y-3 flex-shrink-0"
-            style={{ background: 'rgba(0,229,255,0.04)', border: '1px solid rgba(0,229,255,0.15)' }}>
-            <div className="flex gap-2 flex-wrap">
-              {POST_TYPES.map((t) => (
-                <button key={t.value} onClick={() => setNewType(t.value)}
-                  className="px-3 py-1 rounded-lg text-xs transition-all"
-                  style={newType === t.value ? { background: `${t.color}20`, border: `1px solid ${t.color}50`, color: t.color }
-                    : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#64748b' }}>
-                  {t.label}
+      {username && (
+        <>
+          {/* Create post */}
+          <AnimatePresence>
+            {showCreate && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }} className="mx-4 mt-3 rounded-2xl p-4 space-y-3 flex-shrink-0"
+                style={{ background: 'rgba(0,229,255,0.04)', border: '1px solid rgba(0,229,255,0.15)' }}>
+                <div className="flex gap-2 flex-wrap">
+                  {POST_TYPES.map((t) => (
+                    <button key={t.value} onClick={() => setNewType(t.value)}
+                      className="px-3 py-1 rounded-lg text-xs transition-all"
+                      style={newType === t.value ? { background: `${t.color}20`, border: `1px solid ${t.color}50`, color: t.color }
+                        : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#64748b' }}>
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+                {selectedCrisis && (
+                  <div className="flex items-center gap-2 text-xs text-orange-400">
+                    <AlertTriangle size={12} /> Posting about: {selectedCrisis.title}
+                  </div>
+                )}
+                <textarea value={newContent} onChange={(e) => setNewContent(e.target.value)}
+                  placeholder="Share information, request help, or post a safety tip..."
+                  rows={3}
+                  className="w-full rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 resize-none outline-none"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                <button onClick={handlePost} disabled={isPosting || !newContent.trim()}
+                  className="w-full py-2 rounded-xl text-sm font-semibold text-black disabled:opacity-50"
+                  style={{ background: '#00E5FF' }}>
+                  {isPosting ? 'Posting...' : 'Post to Community'}
                 </button>
-              ))}
-            </div>
-            {selectedCrisis && (
-              <div className="flex items-center gap-2 text-xs text-orange-400">
-                <AlertTriangle size={12} /> Posting about: {selectedCrisis.title}
-              </div>
+              </motion.div>
             )}
-            <textarea value={newContent} onChange={(e) => setNewContent(e.target.value)}
-              placeholder="Share information, request help, or post a safety tip..."
-              rows={3}
-              className="w-full rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 resize-none outline-none"
-              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }} />
-            <button onClick={handlePost} disabled={isPosting || !newContent.trim()}
-              className="w-full py-2 rounded-xl text-sm font-semibold text-black disabled:opacity-50"
-              style={{ background: '#00E5FF' }}>
-              {isPosting ? 'Posting...' : 'Post to Community'}
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </AnimatePresence>
 
-      {/* Feed */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3">
-        {posts.length === 0 ? (
-          <div className="text-center py-12 text-slate-500">
-            <Users size={32} className="mx-auto mb-3 opacity-30" />
-            <p className="text-sm">No posts yet. Be the first to share.</p>
+          {/* Feed */}
+          <div className="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3">
+            {posts.length === 0 ? (
+              <div className="text-center py-12 text-slate-500">
+                <Users size={32} className="mx-auto mb-3 opacity-30" />
+                <p className="text-sm">No posts yet. Be the first to share.</p>
+              </div>
+            ) : (
+              posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post as Post}
+                  username={username}
+                  onUpdated={handlePostUpdated}
+                  onDeleted={handlePostDeleted}
+                />
+              ))
+            )}
           </div>
-        ) : (
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post as Post}
-              username={username}
-              onUpdated={handlePostUpdated}
-              onDeleted={handlePostDeleted}
-            />
-          ))
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }
