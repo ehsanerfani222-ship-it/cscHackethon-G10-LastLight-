@@ -27,6 +27,7 @@ model Crisis {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   posts              Post[]
+  chatRooms          ChatRoom[]
 }
 
 model User {
@@ -38,6 +39,7 @@ model User {
   posts     Post[]
   comments  Comment[]
   reactions Reaction[]
+  chatMessages ChatMessage[]
 }
 
 model Post {
@@ -77,4 +79,27 @@ model Reaction {
   createdAt DateTime @default(now())
 
   @@unique([postId, userId, type])
+}
+
+model ChatRoom {
+  id          String        @id @default(uuid())
+  name        String
+  description String        @default("")
+  crisis      Crisis?       @relation(fields: [crisisId], references: [id], onDelete: SetNull)
+  crisisId    String?
+  createdBy   String        @default("")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  messages    ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  content   String
+  room      ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    String
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

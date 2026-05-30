@@ -84,7 +84,29 @@ export interface Reaction {
   user?: { username: string };
 }
 
-export type AppTab = 'globe' | 'map' | 'community' | 'doctor' | 'safezones' | 'space';
+export interface ChatMessage {
+  id: string;
+  content: string;
+  roomId: string;
+  senderId: string;
+  sender: { id: string; username: string; avatar: string };
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface ChatRoom {
+  id: string;
+  name: string;
+  description: string;
+  crisisId?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+  _count: { messages: number };
+}
+
+export type AppTab = 'globe' | 'map' | 'community' | 'chat' | 'doctor' | 'safezones' | 'space';
 
 export interface SpaceEvent {
   id: string;

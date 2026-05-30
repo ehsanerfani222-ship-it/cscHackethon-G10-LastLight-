@@ -12,6 +12,7 @@ import { Navbar } from '../components/Layout/Navbar';
 import { Sidebar } from '../components/Layout/Sidebar';
 import { BottomNav } from '../components/Layout/BottomNav';
 import { CommunityPanel } from '../components/Community/CommunityPanel';
+import { ChatPanel } from '../components/Chat/ChatPanel';
 import { AiDoctorPanel } from '../components/AiDoctor/AiDoctorPanel';
 import { SafeZonesPanel } from '../components/SafeZones/SafeZonesPanel';
 import { SolarSystem } from '../components/Galaxy/SolarSystem';
@@ -76,6 +77,7 @@ export function Home() {
           <motion.div className="absolute inset-0 pt-11 pb-14 overflow-hidden"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}>
             {activeTab === 'community' && <CommunityPanel />}
+            {activeTab === 'chat' && <ChatPanel />}
             {activeTab === 'doctor' && <AiDoctorPanel />}
             {activeTab === 'safezones' && <SafeZonesPanel />}
           </motion.div>

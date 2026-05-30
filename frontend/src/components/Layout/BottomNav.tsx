@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Globe, Map, Users, Stethoscope, Shield } from 'lucide-react';
+import { Globe, Map, MessageCircle, Users, Stethoscope, Shield } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import type { AppTab } from '../../types/crisis';
 
@@ -7,6 +7,7 @@ const TABS: { id: AppTab; label: string; icon: React.ReactNode }[] = [
   { id: 'globe', label: 'Globe', icon: <Globe size={18} /> },
   { id: 'map', label: 'Map', icon: <Map size={18} /> },
   { id: 'community', label: 'Community', icon: <Users size={18} /> },
+  { id: 'chat', label: 'Chat', icon: <MessageCircle size={18} /> },
   { id: 'doctor', label: 'AI Doctor', icon: <Stethoscope size={18} /> },
   { id: 'safezones', label: 'Safe Zones', icon: <Shield size={18} /> },
   { id: 'space', label: 'Space', icon: <span style={{ fontSize: 18, lineHeight: 1 }}>🪐</span> },
@@ -26,7 +27,7 @@ export function BottomNav() {
         <button
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
-          className="flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl transition-all flex-1 relative"
+          className="flex flex-col items-center gap-1 px-1.5 sm:px-4 py-1.5 rounded-xl transition-all flex-1 relative min-w-0"
           style={activeTab === tab.id ? { color: '#00E5FF' } : { color: '#475569' }}
         >
           {activeTab === tab.id && (
@@ -37,7 +38,7 @@ export function BottomNav() {
             />
           )}
           <span className="relative z-10">{tab.icon}</span>
-          <span className="relative z-10 text-xs font-medium leading-none">{tab.label}</span>
+          <span className="relative z-10 text-[10px] sm:text-xs font-medium leading-none truncate max-w-full">{tab.label}</span>
         </button>
       ))}
     </motion.div>

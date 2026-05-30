@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Crisis, Facility, Post } from '../types/crisis';
+import type { ChatMessage, ChatRoom, Crisis, Facility, Post } from '../types/crisis';
 
 const api = axios.create({ baseURL: '/api' });
 
@@ -64,6 +64,50 @@ export const deleteComment = async (commentId: string): Promise<{ deleted: boole
 
 export const toggleReaction = async (postId: string, username: string, type: string) => {
   const { data } = await api.post(`/community/${postId}/reactions`, { username, type });
+  return data;
+};
+
+export const fetchChatRooms = async (crisisId?: string): Promise<ChatRoom[]> => {
+  const { data } = await api.get('/chat/rooms', { params: crisisId ? { crisisId } : {} });
+  return data;
+};
+
+export const createChatRoom = async (payload: {
+  name: string; description?: string; crisisId?: string; username: string;
+}): Promise<ChatRoom> => {
+  const { data } = await api.post('/chat/rooms', payload);
+  return data;
+};
+
+export const updateChatRoom = async (roomId: string, payload: {
+  name?: string; description?: string; crisisId?: string | null;
+}): Promise<ChatRoom> => {
+  const { data } = await api.patch(`/chat/rooms/${roomId}`, payload);
+  return data;
+};
+
+export const deleteChatRoom = async (roomId: string): Promise<{ deleted: boolean }> => {
+  const { data } = await api.delete(`/chat/rooms/${roomId}`);
+  return data;
+};
+
+export const fetchChatMessages = async (roomId: string): Promise<ChatMessage[]> => {
+  const { data } = await api.get(`/chat/rooms/${roomId}/messages`);
+  return data;
+};
+
+export const createChatMessage = async (roomId: string, content: string, username: string): Promise<ChatMessage> => {
+  const { data } = await api.post(`/chat/rooms/${roomId}/messages`, { content, username });
+  return data;
+};
+
+export const updateChatMessage = async (messageId: string, content: string): Promise<ChatMessage> => {
+  const { data } = await api.patch(`/chat/messages/${messageId}`, { content });
+  return data;
+};
+
+export const deleteChatMessage = async (messageId: string): Promise<{ deleted: boolean }> => {
+  const { data } = await api.delete(`/chat/messages/${messageId}`);
   return data;
 };
 

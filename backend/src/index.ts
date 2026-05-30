@@ -5,6 +5,7 @@ import cors from 'cors';
 import { Server as SocketIO } from 'socket.io';
 import crisisRoutes from './routes/crisis.routes';
 import communityRoutes from './routes/community.routes';
+import chatRoutes from './routes/chat.routes';
 import aiDoctorRoutes from './routes/ai-doctor.routes';
 import facilitiesRoutes from './routes/facilities.routes';
 import newsRoutes from './routes/news.routes';
@@ -58,6 +59,7 @@ app.use(express.json({ limit: '5mb' }));
 
 app.use('/api/crises', crisisRoutes);
 app.use('/api/community', communityRoutes);
+app.use('/api/chat', chatRoutes);
 app.use('/api/doctor', aiDoctorRoutes);
 app.use('/api/facilities', facilitiesRoutes);
 app.use('/api/news', newsRoutes);
