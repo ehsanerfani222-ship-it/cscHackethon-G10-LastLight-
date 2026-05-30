@@ -9,6 +9,13 @@ export interface Facility {
   distanceKm?: number;
 }
 
+export interface EmergencyResponse {
+  id: string;
+  content: string;
+  author: { id: string; username: string; avatar: string };
+  createdAt: string;
+}
+
 export interface EmergencyBroadcast {
   id: string;
   content: string;
@@ -17,5 +24,6 @@ export interface EmergencyBroadcast {
   latitude?: number | null;
   longitude?: number | null;
   author: { id: string; username: string; avatar: string };
+  responses: EmergencyResponse[];
   createdAt: string;
 }

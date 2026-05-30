@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { EmergencyBroadcast } from '../types/emergency';
+import type { EmergencyBroadcast, EmergencyResponse } from '../types/emergency';
 
 const api = axios.create({ baseURL: '/api' });
 
@@ -16,5 +16,13 @@ export const createEmergencyBroadcast = async (payload: {
   longitude?: number;
 }): Promise<EmergencyBroadcast> => {
   const { data } = await api.post('/emergency/broadcasts', payload);
+  return data;
+};
+
+export const createEmergencyResponse = async (
+  broadcastId: string,
+  payload: { content: string; username: string },
+): Promise<EmergencyResponse> => {
+  const { data } = await api.post(`/emergency/broadcasts/${broadcastId}/responses`, payload);
   return data;
 };

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { EmergencyBroadcast, Facility } from '../types/emergency';
+import type { EmergencyBroadcast, EmergencyResponse, Facility } from '../types/emergency';
 
 interface EmergencyState {
   username: string;
@@ -9,6 +9,7 @@ interface EmergencyState {
   setFacilities: (facilities: Facility[]) => void;
   setBroadcasts: (broadcasts: EmergencyBroadcast[]) => void;
   addBroadcast: (broadcast: EmergencyBroadcast) => void;
+  addResponseToBroadcast: (broadcastId: string, response: EmergencyResponse) => void;
 }
 
 export const useEmergencyStore = create<EmergencyState>((set) => ({
@@ -22,4 +23,11 @@ export const useEmergencyStore = create<EmergencyState>((set) => ({
   setFacilities: (facilities) => set({ facilities }),
   setBroadcasts: (broadcasts) => set({ broadcasts }),
   addBroadcast: (broadcast) => set((state) => ({ broadcasts: [broadcast, ...state.broadcasts] })),
+  addResponseToBroadcast: (broadcastId, response) => set((state) => ({
+    broadcasts: state.broadcasts.map((broadcast) => (
+      broadcast.id === broadcastId
+        ? { ...broadcast, responses: [...(broadcast.responses ?? []), response] }
+        : broadcast
+    )),
+  })),
 }));
